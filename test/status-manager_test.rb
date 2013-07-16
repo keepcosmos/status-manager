@@ -1,12 +1,13 @@
 require 'test_initializer'
-require 'status-manager'
-require 'test/unit'
+require 'models/product'
 
 class StatusManagerTest < Test::Unit::TestCase
-	
-	
+
 	def test_sample
-		assert_equal StatusManager.hi, "Hello"
+		product = Product.status_onsale.first
+
+		product.update_status_reject
+		puts product.status
 	end
 
 end

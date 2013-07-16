@@ -1,6 +1,6 @@
 first_product:
   id: 1
-  title: 'beer'
+  title: beer
   status: 'onsale'
 second_product:
   id: 2
@@ -17,4 +17,8 @@ fourth_product:
 fifth_product:
   id: 5
   title: 'ruby'
+  status: 'soldout'
+sixth_product:
+  id: 7
+  title: 'book'
   status: 'soldout'
