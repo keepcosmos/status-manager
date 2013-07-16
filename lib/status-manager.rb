@@ -6,9 +6,9 @@ module StatusManager
 
 	module ClassMethods
 		def acts_as_status (status_title, status={})
-			
-			status.each do |key, value|
+			eval("#{status_title.upcase} = #{status}")
 
+			status.each do |key, value|
 				#scope setting
 				scope "#{status_title}_#{key}", where(status_title => value)
 
@@ -20,8 +20,6 @@ module StatusManager
 				define_method "update_#{status_title}_#{key}" do
 					self.update_attributes(status_title => value)
 				end
-
-
 			end
 
 		end
