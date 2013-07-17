@@ -16,7 +16,16 @@ class StatusManagerTest < Test::Unit::TestCase
 	end
 
 	def test_status_update
-		puts Product.STATUS
+		product = Product.status_reject.first
+		assert product.update_status_onsale
+		assert product.status_onsale?
+	end
+
+	def test_status_group_scope
+		products = Product.status_close
+		products.each do |product|
+			assert product.status_close?
+		end
 	end
 
 end
