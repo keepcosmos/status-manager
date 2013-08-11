@@ -5,6 +5,7 @@ class StatusManagerTest < Test::Unit::TestCase
 
 	def test_current_status
 		product = Product.first
+		puts product.status
 		assert_equal true, product.status_onsale?
 	end
 
