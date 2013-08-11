@@ -7,7 +7,9 @@ module StatusManager
 	module ClassMethods
 		def acts_as_status (status_title, status={})
 			@@status_manager_status_list ||= {}
-			raise "#{status_title} variable is already exist" if @@status_manager_status_list.key? status_title.to_sym
+
+			# TODO : initailize every call model
+			# raise "#{status_title} variable is already exist" if @@status_manager_status_list.key? status_title.to_sym
 			@@status_manager_status_list[status_title.to_sym] = {}
 
 			status.each do |key, value|
