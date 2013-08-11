@@ -22,6 +22,10 @@ module StatusManager
 					eval("self.#{status_title} == '#{value}'")
 				end
 
+				define_method "#{status_title}_to" do |will_status|
+					eval("self.#{status_title} = @@status_manager_status_list[:#{status_title}][will_status]")
+				end 
+
 				define_method "update_#{status_title}_#{key}" do
 					self.update_attributes(status_title.to_sym => value)
 				end
@@ -51,5 +55,3 @@ module StatusManager
 end
 
 ActiveRecord::Base.send(:include, StatusManager) if defined? ActiveRecord
-
-#afterstatus_change

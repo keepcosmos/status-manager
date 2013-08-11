@@ -17,6 +17,8 @@ class StatusManagerTest < Test::Unit::TestCase
 
 	def test_status_update
 		product = Product.status_reject.first
+		product.status_to(:soldout)
+		assert product.status_soldout?
 		assert product.update_status_onsale
 		assert product.status_onsale?
 	end
