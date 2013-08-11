@@ -12,7 +12,7 @@ Simple ActiveRecord Model Status Manager
 gem 'status-manager'
 ```
 
-### Define Model 
+### Example 
 
 ```ruby
 class Product < ActiveRecord::Base
