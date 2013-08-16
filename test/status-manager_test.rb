@@ -5,7 +5,6 @@ class StatusManagerTest < Test::Unit::TestCase
 
 	def test_current_status
 		product = Product.first
-		puts product.status
 		assert_equal true, product.status_onsale?
 	end
 
@@ -20,8 +19,10 @@ class StatusManagerTest < Test::Unit::TestCase
 		product = Product.status_reject.first
 		product.status_to(:soldout)
 		assert product.status_soldout?
-		assert product.update_status_onsale
+		assert product.update_status_to_onsale
 		assert product.status_onsale?
+		product.update_status(:soldout)
+		assert product.status_soldout?
 	end
 
 	def test_status_group_scope
