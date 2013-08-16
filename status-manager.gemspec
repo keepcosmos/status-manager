@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'status-manager'
-  s.version     = '0.1.22'
+  s.version     = '0.1.3'
   s.date        = '2013-08-16'
   s.summary     = "ActiveRecord Model Status Manager"
   s.description = "ActiveRecord Model Status Manager"

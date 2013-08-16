@@ -1,24 +1,24 @@
 first_product:
   id: 1
   title: beer
-  status: 'onsale'
+  sale_status: 'onsale'
 second_product:
   id: 2
   title: 'ipad'
-  status: 'onsale'
+  sale_status: 'onsale'
 third_product:
   id: 3
   title: 'iphone'
-  status: 'pending'
+  sale_status: 'pending'
 fourth_product:
   id: 4
   title: 'gem'
-  status: 'reject'
+  sale_status: 'reject'
 fifth_product:
   id: 5
   title: 'ruby'
-  status: 'soldout'
+  sale_status: 'soldout'
 sixth_product:
   id: 7
   title: 'book'
-  status: 'soldout'
+  sale_status: 'soldout'

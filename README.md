@@ -20,19 +20,28 @@ class Product < ActiveRecord::Base
   
   	# attr_as_status :status_attribute in model, {:status_value => 'status_value that is saved in database'}
 	attr_as_status :my_status, :onsale => 'onsale', :reject => 'reject', :pending => 'pending', :soldout => 'soldout'
-	my_status_group :close, [:reject, :pending]
+	status_group :my_status, :close => [:reject, :pending], :open => [:onsale, :soldout]
 	
 end
 ```
 
 ```ruby
-# select
-@onsale_products = Product.my_status_onsale
-@closed_products = Product.my_status_close
+## select
+@onsale_product = Product.my_status_onsale.first
+@closed_product = Product.my_status_close.first
 
-assert @onsale_products.first.my_status_onsale?
-assert @closed_products.first.my_status_close?
+@onsale_product.my_status_onsale? #=> true
+#or
+@closed_product.my_status?(:close) #=> true
 
-# update
-@closed_products.first.my_status_to(:onsale) ## => update just attribute value
-@closed_products.first.update_my_status_onsale ## => update with database
+## update just attribute value
+@closed_product.my_status_to(:onsale)
+#or
+@closed_product.my_Status_to_onsale
+
+## update with database
+@closed_product.update_my_status(:onsale) 
+#or
+@closed_product.update_my_status_onsale
+
+
