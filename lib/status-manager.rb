@@ -5,11 +5,11 @@ module StatusManager
 	end
 
 	module ClassMethods
-		def acts_as_status (status_title, status={})
+		def attr_as_status (status_title, status={})
 			@@status_manager_status_list ||= {}
-
+			puts "double"
 			# TODO : initailize every call model
-			# raise "#{status_title} variable is already exist" if @@status_manager_status_list.key? status_title.to_sym
+			raise "#{status_title} variable is already exist" if @@status_manager_status_list.key? status_title.to_sym
 			@@status_manager_status_list[status_title.to_sym] = {}
 
 			status.each do |key, value|
