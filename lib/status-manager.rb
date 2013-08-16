@@ -1,9 +1,11 @@
-require 'status-manager/status-group-manager'
+require 'status-manager/status_group_manager'
+require 'status-manager/statau_update_callback'
 
 module StatusManager
 
 	def self.included(base)
-		base.extend(ClassMethods)
+		base.extend ClassMethods
+		base.extend StatusManager::StatusGroupManager
 	end
 
 	module ClassMethods
@@ -44,8 +46,6 @@ module StatusManager
 			define_method "update_#{status_title}" do |next_status|
 				self.update_attributes(status_title.to_sym => self.class.manager_status_list[status_title][next_status])
 			end
-
-			extend StatusManager::StatusGroupManager
 		end
 
 		def manager_status_list
@@ -57,6 +57,7 @@ module StatusManager
 			end
 			status_list
 		end
+
 	end
 end
 
