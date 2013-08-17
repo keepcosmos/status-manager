@@ -5,7 +5,7 @@ class Product < ActiveRecord::Base
 	attr_as_status :sale_status, :onsale => 'onsale', :reject => 'reject', :pending => 'pending', :soldout => 'soldout'
 	status_group :sale_status, :close => [:reject, :pending], :open => [:onsale, :soldout]
 
-	after_status_update :sale_status, :close => :onsale do |product|
+	before_status_update :sale_status, :close => :onsale do |product|
 		puts "open #{product.title}"
 	end
 

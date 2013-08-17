@@ -1,5 +1,6 @@
 require 'status-manager/status_group_manager'
 require 'status-manager/status_update_callback'
+require 'status-manager/status_validation'
 require 'active_support/inflector'
 
 module StatusManager
@@ -8,6 +9,7 @@ module StatusManager
 		base.extend ClassMethods
 		base.extend StatusManager::StatusGroupManager
 		base.extend StatusManager::StatusUpdateCallback
+		base.extend StatusManager::StatusValidation
 	end
 
 	module ClassMethods
