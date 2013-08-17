@@ -14,7 +14,11 @@ module StatusManager
 
 				# status check method
 				define_method "#{status_title}_#{group_status_title}?" do 
-					group_status_values.include? self.send(status_title.to_sym)
+					group_status_values.include? self.send(status_title)
+				end
+
+				define_method "#{status_title}_was_#{group_status_title}?" do
+					group_status_values.include? self.send("#{status_title}_was")
 				end
 			end
 		end

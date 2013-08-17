@@ -1,11 +1,13 @@
 require 'status-manager/status_group_manager'
-require 'status-manager/statau_update_callback'
+require 'status-manager/status_update_callback'
+require 'active_support/inflector'
 
 module StatusManager
 
 	def self.included(base)
 		base.extend ClassMethods
 		base.extend StatusManager::StatusGroupManager
+		base.extend StatusManager::StatusUpdateCallback
 	end
 
 	module ClassMethods
@@ -19,6 +21,10 @@ module StatusManager
 				#status check method
 				define_method "#{status_title}_#{key}?" do 
 					self.send("#{status_title}") == value
+				end
+
+				define_method "#{status_title}_was_#{key}?" do 
+					self.send("#{status_title}_was") == value
 				end
 
 				#update status
@@ -36,6 +42,10 @@ module StatusManager
 				self.send("#{status_title}_#{status}?")
 			end
 
+			define_method "#{status_title}_was?" do |status|
+				self.send("#{status_title}_was_#{status}?")
+			end
+
 			#status setter (do not override attr_accessible)
 			define_method "#{status_title}_to" do |next_status|
 				status_value = self.class.manager_status_list[status_title][next_status]
@@ -43,8 +53,13 @@ module StatusManager
 			end
 
 			# update status
-			define_method "update_#{status_title}" do |next_status|
+			define_method "update_#{status_title}_to" do |next_status|
 				self.update_attributes(status_title.to_sym => self.class.manager_status_list[status_title][next_status])
+			end
+
+			#get status list
+			define_singleton_method "#{status_title.to_s.pluralize}" do
+				self.manager_status_list[status_title.to_sym]
 			end
 		end
 

@@ -3,6 +3,11 @@ require 'models/product'
 
 class StatusManagerTest < Test::Unit::TestCase
 
+	def test_status_chagne
+		product = Product.sale_status_pending.first
+		product.update_sale_status_to_onsale
+	end
+
 	def test_current_status
 		products = Product.sale_status_onsale
 		products.each do |product|
@@ -24,7 +29,7 @@ class StatusManagerTest < Test::Unit::TestCase
 		assert product.sale_status_reject?
 		assert product.sale_status? :reject
 
-		product.update_sale_status :soldout
+		product.update_sale_status_to :soldout
 		assert Product.find(product.id).sale_status_soldout?
 
 		product.update_sale_status_to_onsale
@@ -45,26 +50,5 @@ class StatusManagerTest < Test::Unit::TestCase
 		end
 	end
 
-	# def test_current_status
-	# 	product = Product.first
-	# 	assert_equal true, product.sale_status_onsale?
-	# end
-
-	# def test_status_scope
-	# 	products = Product.sale_status_reject
-	# 	products.each do |product|
-	# 		assert product.sale_status_reject?, "#{product.id} is not rejected product"
-	# 	end
-	# end
-
-	# def test_status_update
-	# 	product = Product.sale_status_reject.first
-	# 	product.sale_status_to(:soldout)
-	# 	assert product.sale_status_soldout?
-	# 	assert product.update_status_to_onsale
-	# 	assert product.sale_status_onsale?
-	# 	product.update_status(:soldout)
-	# 	assert product.sale_status_soldout?
-	# end
 
 end
