@@ -26,11 +26,12 @@ class Product < ActiveRecord::Base
 end
 ```
 
-### Queries
+#### Queries
 ```ruby
-## select
+## status_list
 Product.sale_statuses #=> {:onsale => 'onsale', :reject => 'reject', :pending => 'pending', :soldout => 'soldout'}
 
+## use scope
 @onsale_product = Product.sale_status_onsale.first
 @closed_product = Product.sale_status_close.first
 
@@ -38,18 +39,18 @@ Product.sale_statuses #=> {:onsale => 'onsale', :reject => 'reject', :pending =>
 #or
 @closed_product.sale_status?(:close) #=> true
 
-## update just attribute value
+## change attribute value
 @closed_product.sale_status_to(:onsale)
 #or
 @closed_product.sale_Status_to_onsale
 
-## update with database
+## update value with database
 @closed_product.update_sale_status_to(:onsale) 
 #or
 @closed_product.update_sale_status_to_onsale
 ```
 
-### Callback
+#### Callback
 ``` ruby
 class Product < ActiveRecord::Base
 	attr_accessible :title, :sale_status
@@ -58,6 +59,7 @@ class Product < ActiveRecord::Base
 	attr_as_status :sale_status, :onsale => 'onsale', :reject => 'reject', :pending => 'pending', :soldout => 'soldout'
 	status_group :sale_status, :close => [:reject, :pending], :open => [:onsale, :soldout]
 
+	#callback update status from specific status
 	before_status_update :sale_status, :onsale => :close do |product|
 		puts "#{product.title} is closed"
 	end
@@ -66,7 +68,8 @@ class Product < ActiveRecord::Base
 		puts "closed #{product.title} is opened"
 		# do something after update 
 	end
-
+	
+	#callback update status
 	after_status_update :sale_status, :reject do |prdocut|
 		puts "#{product.title} is rejected"
 		# do something after update
