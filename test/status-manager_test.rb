@@ -4,8 +4,10 @@ require 'models/product'
 class StatusManagerTest < Test::Unit::TestCase
 
 	def test_status_chagne
-		product = Product.sale_status_pending.first
+		product = Product.sale_status(:pending).first
+		assert product.sale_status?(:pending)
 		product.update_sale_status_to_onsale
+		assert product.sale_status?(:onsale)
 	end
 
 	def test_current_status

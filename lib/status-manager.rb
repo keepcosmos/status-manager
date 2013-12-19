@@ -1,6 +1,7 @@
 require 'status-manager/status_group_manager'
 require 'status-manager/status_update_callback'
 require 'status-manager/status_validation'
+require 'status-manager/status_store'
 require 'active_support/inflector'
 
 module StatusManager
@@ -13,67 +14,68 @@ module StatusManager
 	end
 
 	module ClassMethods
-		def attr_as_status (status_title, statuses={})
-			manager_status_list[status_title] = statuses
+		def attr_as_status (status_attribute, statuses={})
+			status_store_list[status_attribute] = statuses
+
+			scope "#{status_attribute}", lambda{ | key | where("#{self.table_name}.#{status_attribute}" => status_store_list[status_attribute][key])}
 
 			statuses.each do |key, value|
 				#active_record scope setting
-				scope "#{status_title}_#{key}", where("#{self.table_name}.#{status_title}" => value)
+				scope "#{status_attribute}_#{key}", where("#{self.table_name}.#{status_attribute}" => value)
 
 				#status check method
-				define_method "#{status_title}_#{key}?" do 
-					self.send("#{status_title}") == value
+				define_method "#{status_attribute}_#{key}?" do 
+					self.send("#{status_attribute}") == value
 				end
 
-				define_method "#{status_title}_was_#{key}?" do 
-					self.send("#{status_title}_was") == value
+				define_method "#{status_attribute}_was_#{key}?" do 
+					self.send("#{status_attribute}_was") == value
 				end
 
 				#update status
-				define_method "update_#{status_title}_to_#{key}" do 
-					self.update_attributes("#{status_title}" => "#{value}")
+				define_method "update_#{status_attribute}_to_#{key}" do 
+					self.update_attributes("#{status_attribute}" => "#{value}")
 				end
 
-				define_method "#{status_title}_to_#{key}" do 
-					self.send("#{status_title}=", value)
+				define_method "#{status_attribute}_to_#{key}" do 
+					self.send("#{status_attribute}=", value)
 				end
 			end
 
 			#status check method
-			define_method "#{status_title}?" do |status|
-				self.send("#{status_title}_#{status}?")
+			define_method "#{status_attribute}?" do |status|
+				self.send("#{status_attribute}_#{status}?")
 			end
 
-			define_method "#{status_title}_was?" do |status|
-				self.send("#{status_title}_was_#{status}?")
+			define_method "#{status_attribute}_was?" do |status|
+				self.send("#{status_attribute}_was_#{status}?")
 			end
 
 			#status setter (do not override attr_accessible)
-			define_method "#{status_title}_to" do |next_status|
-				status_value = self.class.manager_status_list[status_title][next_status]
-				self.send("#{status_title}=", status_value)
+			define_method "#{status_attribute}_to" do |next_status|
+				status_value = self.class.status_store_list[status_attribute][next_status]
+				self.send("#{status_attribute}=", status_value)
 			end
 
 			# update status
-			define_method "update_#{status_title}_to" do |next_status|
-				self.update_attributes(status_title.to_sym => self.class.manager_status_list[status_title][next_status])
+			define_method "update_#{status_attribute}_to" do |next_status|
+				self.update_attributes(status_attribute.to_sym => self.class.status_store_list[status_attribute][next_status])
 			end
 
 			#get status list
-			define_singleton_method "#{status_title.to_s.pluralize}" do
-				self.manager_status_list[status_title.to_sym]
+			define_singleton_method "#{status_attribute.to_s.pluralize}" do
+				self.status_store_list[status_attribute.to_sym]
 			end
 		end
 
-		def manager_status_list
-			status_list = {}
-			begin
-				status_list = self.class_variable_get('@@manager_status_list')
-			rescue NameError
-				self.class_variable_set('@@manager_status_list', status_list)
+		def status_store_list
+			if self.class_variable_defined?(:@@status_store_list)
+				self.class_variable_get(:@@status_store_list)
+			else
+				self.class_variable_set(:@@status_store_list, {})
 			end
-			status_list
 		end
+
 
 	end
 end
