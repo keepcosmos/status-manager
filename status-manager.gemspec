@@ -3,7 +3,7 @@ Gem::Specification.new do |s|
   s.version     = '0.7.0'
   s.date        = '2013-12-20'
   s.summary     = "ActiveRecord Model Status Manager"
-  s.description = "ActiveRecord Model Status Manager, It provides easy ways managing model that have many statuses."
+  s.description = "ActiveRecord Model Status Manager, It provides easy ways for managing ActiveModels that have many statuses."
   s.authors     = ["Keepcosmos"]
   s.email       = 'keepcosmos@gmail.com'
   s.licenses = 'MIT'
