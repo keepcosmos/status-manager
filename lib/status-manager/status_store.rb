@@ -1,64 +1,63 @@
 module StatusManager
 	class StatusStoreList
-		attr_accessor :status_store
+		attr_accessor :status_stores
 
 		def initialize
-			@status_store = []
+			@status_stores = []
 		end
 
-		def add_status_store(status_store)
-			@status_store << status_store
+		def add(status_store)
+			@status_stores << status_store
 		end
 
-		def status_store(status_attribute)
-			@status_store.select {|status_store| status_store.status_attribute == status_attribute}.first
+		def get(attribute)
+			@status_stores.select {|status_store| status_store.attribute_name == attribute}.first
 		end
 	end
 
 	class StatusStore
-		attr_accessor :status_attribute, :status_sets, :group_statuses
+		attr_accessor :attribute_name, :status_sets, :group_statuses
 
-		def initialize(status_attribute, status_sets=nil )
-			@status_attribute = status_attribute
+		def initialize(attribute_name, status_sets=nil )
+			@attribute_name = attribute_name
 			@status_sets = status_sets || {}
-			@group_statuses = []
+			@group_statuses = {}
 		end
 
 		def status?(status)
 			@status_sets.key?(status)
 		end
 
-		def status_keys
+		def group_status?(group_status)
+			@group_statuses.key?(group_status)
+		end
+
+		def statuses
 			@status_sets.keys
 		end
 
-		def status_values
+		def values
 			@status_sets.values
 		end
 
-		def status_value(status)
-			@status_sets[:key]
+		def value(status)
+			@status_sets[status]
 		end
 
-		def status_key(value)
+		def status(value)
 			@status_sets.select{ |status, _value| _value == value}.first[0]
 		end
 
-		def add_status_group(group_status)
-			@group_statuses << group_status
-		end
-	end
-
-	class GroupStatus
-		attr_accessor :group_status_name, :statuses
-
-		def initialize(group_status_name, statuses=nil)
-			@group_status_name = group_status_name
-			@statuses = statuses || []
+		def add_group_status(group_status_name, statuses)
+			@group_statuses.merge!({group_status_name => statuses})
 		end
 
-		def add_statuse(status)
-			@statuses << status
+		def get_group_status_sets(group_status_name)
+			statuses = {}
+			@group_statuses[group_status_name].each do |status|
+				statuses[status] = self.value(status)
+			end
+			statuses
 		end
 	end
 end

@@ -3,7 +3,7 @@ require 'models/product'
 
 class StatusManagerTest < Test::Unit::TestCase
 
-	def test_status_chagne
+	def test_status_change
 		product = Product.sale_status(:pending).first
 		assert product.sale_status?(:pending)
 		product.update_sale_status_to_onsale
@@ -40,6 +40,8 @@ class StatusManagerTest < Test::Unit::TestCase
 
 	def test_group_status
 		closed_products = Product.sale_status_close
+		closed_products = Product.sale_status(:close)
+		assert closed_products == _closed_products
 		closed_products.each do |product|
 			assert product.sale_status_close?
 			assert product.sale_status? :close
@@ -51,6 +53,5 @@ class StatusManagerTest < Test::Unit::TestCase
 			assert product.sale_status? :open
 		end
 	end
-
 
 end

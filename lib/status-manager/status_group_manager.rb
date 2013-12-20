@@ -1,24 +1,23 @@
 module StatusManager
 	module StatusGroupManager
-		def status_group (status_attribute, group_status_set={})
-			raise "undefined #{status_attribute}" unless self.status_store_list.key? status_attribute.to_sym
+		def status_group (status_attribute_name, group_status_set={})
+			status_store = self.status_store_list.get(status_attribute_name.to_sym)
+			raise "undefined #{status_attribute_name}" unless status_store
 			
 			group_status_set.each do |group_status_name, group_statuses|
-				group_status_values = []
-				group_statuses.each do |status|
-					group_status_values << self.status_store_list[status_attribute][status]
-				end
+				raise "#{status_attribute_name}-#{group_status_name} is not a group, group must have statuses" if group_statuses.size < 1
+				status_store.add_group_status(group_status_name, group_statuses)
 
 				# set scope
-				scope "#{status_attribute}_#{group_status_name}", where("#{self.table_name}.#{status_attribute} in (?)", group_status_values)
+				scope "#{status_store.attribute_name}_#{group_status_name}", where("#{self.table_name}.#{status_store.attribute_name} in (?)", status_store.get_group_status_sets(group_status_name).values)
 
 				# status check method
-				define_method "#{status_attribute}_#{group_status_name}?" do 
-					group_status_values.include? self.send(status_attribute)
+				define_method "#{status_attribute_name}_#{group_status_name}?" do 
+					status_store.get_group_status_sets(group_status_name).values.include? self.send(status_attribute_name)
 				end
 
-				define_method "#{status_attribute}_was_#{group_status_name}?" do
-					group_status_values.include? self.send("#{status_attribute}_was")
+				define_method "#{status_attribute_name}_was_#{group_status_name}?" do
+					status_store.get_group_status_sets(group_status_name).values.include? self.send("#{status_attribute_name}_was")
 				end
 			end
 		end

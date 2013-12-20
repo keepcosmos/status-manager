@@ -2,7 +2,7 @@ status-manager
 ==============
 
 ## Description
-Simple ActiveRecord Model Status Manager
+ActiveRecord Model Status Manager, It provides easy ways managing model that have many statuses.
 
 ## Usage
 
@@ -20,8 +20,8 @@ class Product < ActiveRecord::Base
 	attr_accessible :title, :sale_status
   
   	# attr_as_status :status_attribute in model, {:status_value => 'status_value that is saved in database'}
-	attr_as_status :sale_status, :onsale => 'onsale', :reject => 'reject', :pending => 'pending', :soldout => 'soldout'
-	status_group :sale_status, :close => [:reject, :pending], :open => [:onsale, :soldout]
+	attr_as_status :sale_status, {:onsale => 'onsale', :reject => 'reject', :pending => 'pending', :soldout => 'soldout'}
+	status_group :sale_status, {:close => [:reject, :pending], :open => [:onsale, :soldout]}
 	
 end
 ```
@@ -32,7 +32,7 @@ end
 Product.sale_statuses #=> {:onsale => 'onsale', :reject => 'reject', :pending => 'pending', :soldout => 'soldout'}
 
 ## use scope
-@onsale_product = Product.sale_status_onsale.first
+@onsale_product = Product.sale_status_onsale.first # or Product.sale_status(:onsale).first
 @closed_product = Product.sale_status_close.first
 
 @onsale_product.sale_status_onsale? #=> true
@@ -77,3 +77,4 @@ class Product < ActiveRecord::Base
 end
 
 ```
+
