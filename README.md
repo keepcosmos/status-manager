@@ -17,8 +17,16 @@ class Product < ActiveRecord::Base
 	attr_accessible :title, :sale_status
   
   	# attr_as_status :status_attribute in model, {:status_value => 'status_value that is saved in database'}
-	attr_as_status :sale_status, {:onsale => 'onsale', :reject => 'reject', :pending => 'pending', :soldout => 'soldout'}
-	status_group :sale_status, {:close => [:reject, :pending], :open => [:onsale, :soldout]}	
+	attr_as_status :sale_status, {
+		:onsale => 'onsale', 
+		:reject => 'reject', 
+		:pending => 'pending', 
+		:soldout => 'soldout'
+		}
+	status_group :sale_status, {
+		:close => [:reject, :pending], 
+		:open => [:onsale, :soldout]
+		}	
 end
 ```
 
@@ -40,12 +48,12 @@ Product.sale_status(:onsale, :pending)
 @closed_product.sale_status?(:close) #=> true
 
 
-## change attribute value
+## change status
 @closed_product.sale_status_to(:onsale)
 #or
 @closed_product.sale_status_to_onsale
 
-## update value with database
+## update status
 @closed_product.update_sale_status_to(:onsale) 
 #or
 @closed_product.update_sale_status_to_onsale
