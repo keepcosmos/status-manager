@@ -9,15 +9,15 @@ module StatusManager
 				status_store.add_group_status(group_status_name, group_statuses)
 
 				# set scope
-				scope "#{status_store.attribute_name}_#{group_status_name}", where("#{self.table_name}.#{status_store.attribute_name} in (?)", status_store.get_group_status_sets(group_status_name).values)
+				scope "#{status_store.attribute_name}_#{group_status_name}", where("#{self.table_name}.#{status_store.attribute_name} in (?)", status_store.get_group_status(group_status_name).values)
 
 				# status check method
 				define_method "#{status_attribute_name}_#{group_status_name}?" do 
-					status_store.get_group_status_sets(group_status_name).values.include? self.send(status_attribute_name)
+					status_store.get_group_status(group_status_name).values.include? self.send(status_attribute_name)
 				end
 
 				define_method "#{status_attribute_name}_was_#{group_status_name}?" do
-					status_store.get_group_status_sets(group_status_name).values.include? self.send("#{status_attribute_name}_was")
+					status_store.get_group_status(group_status_name).values.include? self.send("#{status_attribute_name}_was")
 				end
 			end
 		end

@@ -18,13 +18,7 @@ module StatusManager
 			status_store = StatusStore.new(status_attribute, status_sets)
 			status_store_list.add(status_store)
 
-			scope "#{status_store.attribute_name}", lambda{ | status |
-				if status_store.status?(status)
-					where("#{self.table_name}.#{status_store.attribute_name.to_s}" => status_store_list.get(status_store.attribute_name).value(status))
-				elsif status_store.group_status?(status)
-					where("#{self.table_name}.#{status_store.attribute_name} in (?)", status_store.get_group_status_sets(status).values)
-				end
-			}
+			scope "#{status_store.attribute_name}", lambda{ | statuses | where("#{self.table_name}.#{status_store.attribute_name.to_s}" => status_store.values(statuses)) }
 
 			status_store.status_sets.each do |key, value|
 				#active_record scope setting
@@ -60,18 +54,39 @@ module StatusManager
 
 			#status setter (do not override attr_accessible)
 			define_method "#{status_store.attribute_name}_to" do |status|
+				raise "#{status} is undefined status or it is group status" unless status_store.status?(status)
 				status_value = self.class.status_store_list.get(status_store.attribute_name).value(status)
 				self.send("#{status_store.attribute_name}=", status_value)
 			end
 
 			# update status
 			define_method "update_#{status_store.attribute_name}_to" do |status|
+				raise "#{status} is undefined status or it is group status" unless status_store.status?(status)
 				self.update_attributes(status_attribute.to_sym => self.class.status_store_list.get(status_store.attribute_name).value(status))
+			end
+
+			define_method("#{status_store.attribute_name}_changed?") do |options={}|
+				statuses = self.send("#{status_store.attribute_name}_change")
+				if statuses
+					if statuses[0] == statuses[1]
+						return false
+					elsif options[:from] && options[:to]
+						self.send("#{status_store.attribute_name}_was?", options[:from]) && self.send("#{status_store.attribute_name}?", options[:to])
+					elsif options[:to]
+						self.send("#{status_store.attribute_name}?", options[:to])
+					elsif options[:from]
+						self.send("#{status_store.attribute_name}_was?", options[:from])
+					else
+						return true
+					end
+				else
+					return false
+				end
 			end
 
 			#get status list
 			define_singleton_method "#{status_store.attribute_name.to_s.pluralize}" do
-				self.class.status_store_list.get(status_attribute).status_sets
+				self.status_store_list.get(status_store.attribute_name).status_sets
 			end
 		end
 
@@ -82,8 +97,6 @@ module StatusManager
 				self.class_variable_set(:@@status_store_list, StatusStoreList.new)
 			end
 		end
-
-
 	end
 end
 
