@@ -24,7 +24,7 @@ class Product < ActiveRecord::Base
 		:soldout => 'soldout'
 		}
 	status_group :sale_status, {
-		:close => [:reject, :pending],  # it works as status
+		:close => [:reject, :pending],  # :close works as status
 		:open => [:onsale, :soldout]
 		}	
 end
