@@ -24,7 +24,7 @@ class Product < ActiveRecord::Base
 		:soldout => 'soldout'
 		}
 	status_group :sale_status, {
-		:close => [:reject, :pending], 
+		:close => [:reject, :pending],  # it works as status
 		:open => [:onsale, :soldout]
 		}	
 end
@@ -39,9 +39,9 @@ Product.sale_statuses #=> {:onsale => 'onsale', :reject => 'reject', :pending =>
 @onsale_product = Product.sale_status_onsale.first 
 @closed_product = Product.sale_status_close.first
 #or using symbol
-Product.sale_status(:onsale)
+Product.sale_status(:open)
 #or multiple statuses (with group statuses)
-Product.sale_status(:onsale, :pending)
+Product.sale_status(:soldout, :close)
 
 @onsale_product.sale_status_onsale? #=> true
 #or
