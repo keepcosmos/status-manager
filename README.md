@@ -65,6 +65,7 @@ Product.sale_status(:soldout, :close)
 ```ruby
 pending_product = Product.sale_status(:pending).first
 pending_product.sale_status_to(:onsale)
+
 pending_product.sale_status_changed? #=> true
 pending_product.sale_status_changed?(:from => :pending, :to => :onsale) #=> true
 pending_product.sale_status_changed?(:to => :onsale) #=>true
