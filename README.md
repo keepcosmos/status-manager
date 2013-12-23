@@ -67,8 +67,8 @@ pending_product = Product.sale_status(:pending).first
 pending_product.sale_status_to(:onsale)
 pending_product.sale_status_changed? #=> true
 pending_product.sale_status_changed?(:from => :pending, :to => :onsale) #=> true
-pending_product.sale_Status_changed?(:to => onsale) #=>true
-pending_product.sale_Status_changed?(:from => onsale) #=> true
+pending_product.sale_Status_changed?(:to => :onsale) #=>true
+pending_product.sale_Status_changed?(:from => :onsale) #=> true
 ```
 
 #### Callback
