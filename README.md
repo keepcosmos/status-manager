@@ -1,6 +1,7 @@
 ## Description
-ActiveRecord Model Status Manager, It provides easy ways managing model that have many statuses.
+ActiveRecord Model Status Manager, It provides easy ways managing models that have many statuses.
 
+www.myrealtrip.com uses status-manager
 ## Usage
 
 ### Rails 3.x
@@ -97,5 +98,3 @@ class Product < ActiveRecord::Base
 end
 
 ```
-
-www.myrealtrip.com uses status-manager
