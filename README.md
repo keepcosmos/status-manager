@@ -43,7 +43,7 @@ Product.sale_statuses #=> {:onsale => 'onsale', :reject => 'reject', :pending =>
 #or using symbol
 Product.sale_status(:open)
 #or multiple statuses (with group statuses)
-Product.sale_status(:soldout, :close)
+Product.sale_status([:soldout, :close]) # use array
 
 @onsale_product.sale_status_onsale? #=> true
 #or
