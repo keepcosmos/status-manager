@@ -1,3 +1,3 @@
 module StatusManager
-	VERSION = '0.7.0'
+	VERSION = '0.8.3'
 end

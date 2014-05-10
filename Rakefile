@@ -1,13 +1,13 @@
 require 'bundler/gem_tasks'
 require 'rake'
 require 'rake/testtask'
+require 'rspec/core/rake_task'
+Bundler::GemHelper.install_tasks
 
 desc "Default: run unit tests."
-task :default => :test
+task :default => :spec
 
-desc "Test Status Manager"
-Rake::TestTask.new(:test) do |t|
-	t.libs << %w[lib test]
-	t.pattern = 'test/**/*_test.rb'
-	t.verbose = true
+desc "Run Status Manager RSpec"
+RSpec::Core::RakeTask.new do |t|
+  t.verbose = false
 end

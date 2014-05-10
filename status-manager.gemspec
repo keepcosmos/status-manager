@@ -1,16 +1,24 @@
-Gem::Specification.new do |s|
-  s.name        = 'status-manager'
-  s.version     = '0.8.1'
-  s.date        = '2013-12-21'
-  s.summary     = "ActiveRecord Model Status Manager"
-  s.description = "ActiveRecord Model Status Manager, It provides easy ways for managing ActiveModels that have many statuses."
-  s.authors     = ["Keepcosmos"]
-  s.email       = 'keepcosmos@gmail.com'
-  s.licenses = 'MIT'
+# coding: utf-8
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require 'status-manager/version'
 
-  s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.require_paths = ["lib"]
-  
-  s.homepage    = 'https://github.com/keepcosmos/status-manager'
+Gem::Specification.new do |spec|
+  spec.name          = "status-manager"
+  spec.version       = StatusManager::VERSION
+  spec.date          = "2014-04-10"
+  spec.authors       = ["keepcosmos"]
+  spec.email         = ["keepcosmos@gmail.com"]
+  spec.description   = "ActiveRecord Model Status Manager"
+  spec.summary       = "ActiveRecord Model Status Manager, It provides easy ways for managing ActiveModels that have many statuses."
+  spec.homepage      = "https://github.com/keepcosmos/status-manager"
+  spec.license       = "MIT"
+
+  spec.files         = `git ls-files`.split($/)
+  spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
+  spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
+  spec.require_paths = ["lib"]
+
+  spec.add_development_dependency "bundler", "~> 1.3"
+  spec.add_development_dependency "rake"
 end
