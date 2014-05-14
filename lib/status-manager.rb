@@ -14,7 +14,23 @@ module StatusManager
 	end
 
 	module ClassMethods
-		def attr_as_status (status_attribute, status_sets={})
+		def attr_as_status(status_attribute, status_sets, options={})
+			register_status_sets(status_attribute, status_sets)
+			status_group(status_attribute, options[:group]) if options.key?(:group)
+			set_default_status(status_attribute, options[:default]) if options.key?(:default)
+		end
+
+		def register_status_sets(status_attribute, status_sets, default_status=nil)
+			# if status_sets parameter is array.
+			# ex) register_status_sets(status, [:onsale, :soldout, :reject])
+			raise "Not defined statuses" if status_sets.empty?
+			if status_sets.instance_of?(Array)
+				raise Exception, "#{status_attribute} column type must be :string or :text in this case, if you want to specify column value use Hash class" unless [:string, :text].include?(self.columns_hash[status_attribute.to_s].type)
+				_status_sets = {}
+				status_sets.each { |status_set| _status_sets[status_set] = status_set.to_s }
+				status_sets = _status_sets
+			end
+
 			status_store = StatusStore.new(status_attribute, status_sets)
 			status_store_list.add(status_store)
 
@@ -90,6 +106,12 @@ module StatusManager
 			end
 		end
 
+		def set_default_status(status_attribute, status)
+			before_create do |obj|
+				obj.send("#{status_attribute.to_s}=", obj.class.send(status_attribute.to_s.pluralize)[status]) unless obj.send(status_attribute.to_s)
+			end
+		end
+
 		def status_store_list
 			if self.class_variable_defined?(:@@status_store_list)
 				self.class_variable_get(:@@status_store_list)
@@ -97,6 +119,7 @@ module StatusManager
 				self.class_variable_set(:@@status_store_list, StatusStoreList.new)
 			end
 		end
+
 	end
 end
 

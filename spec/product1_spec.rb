@@ -3,6 +3,12 @@ require 'models/product'
 
 describe StatusManager do
 
+	it "should set default status" do
+		product = Product.new
+		product.save
+		product.should be_sale_status(:onsale)
+	end
+
 	it "should check chages with hash" do
 		product = Product.sale_status(:onsale).first
 		product.should_not be_sale_status_changed
