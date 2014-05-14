@@ -14,6 +14,22 @@ gem 'status-manager'
 ### Example 
 
 #### Define
+
+```ruby
+class Product < ActiveRecord::Base
+	attr_accessible :title, :sale_status
+  
+	attr_as_status :sale_status, 
+		[:onsale, :reject, :pending, :soldout], 
+		# If you want to specify status value that save in database, use Hash. ex) {:onsale => "ONSALE", :pending => "PENDING" ...} or {:onsale => 1, :pending => 2 ...}
+		:default => :pending,	#option
+		:group => {
+			:close => [:reject, :pending],
+			:open => [:onsale, :soldout]
+		}	#:close and :open work as status(option)
+end
+```
+or
 ```ruby
 class Product < ActiveRecord::Base
 	attr_accessible :title, :sale_status
@@ -78,8 +94,14 @@ class Product < ActiveRecord::Base
 	attr_accessible :title, :sale_status
   
   	# attr_as_status :status_attribute in model, {:status_value => 'status_value that is saved in database'}
-	attr_as_status :sale_status, :onsale => 'onsale', :reject => 'reject', :pending => 'pending', :soldout => 'soldout'
-	status_group :sale_status, :close => [:reject, :pending], :open => [:onsale, :soldout]
+	attr_as_status :sale_status, 
+		[:onsale, :reject, :pending, :soldout], 
+		:default => :pending
+		:group => {
+			close: [:reject, :pending], 
+			open: [:onsale, :soldout]
+		}
+		
 
 	#callback update status from specific status
 	before_status_update :sale_status, :onsale => :close do |product|
