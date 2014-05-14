@@ -1,4 +1,6 @@
 ## Description
+[![Gem Version](https://badge.fury.io/rb/status-manager.svg)](http://badge.fury.io/rb/status-manager)
+
 ActiveRecord Model Status Manager, It provides easy ways managing models that have many statuses.
 
 www.myrealtrip.com uses status-manager
@@ -21,12 +23,14 @@ class Product < ActiveRecord::Base
   
 	attr_as_status :sale_status, 
 		[:onsale, :reject, :pending, :soldout], 
-		# If you want to specify status value that save in database, use Hash. ex) {:onsale => "ONSALE", :pending => "PENDING" ...} or {:onsale => 1, :pending => 2 ...}
-		:default => :pending,	#option
+		:default => :pending,
 		:group => {
 			:close => [:reject, :pending],
 			:open => [:onsale, :soldout]
-		}	#:close and :open work as status(option)
+		}
+	# 1. :default and :group are optional
+	# 2. :group element :close and :open work as status
+	# 3. If you want to specify status value that save in database, use Hash. ex) {:onsale => "ONSALE", :pending => "PENDING" ...} or {:onsale => 1, :pending => 2 ...}
 end
 ```
 or
