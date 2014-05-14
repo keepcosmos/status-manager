@@ -30,7 +30,8 @@ class Product < ActiveRecord::Base
 		}
 	# 1. :default and :group are optional
 	# 2. :group element :close and :open work as status
-	# 3. If you want to specify status value that save in database, use Hash. ex) {:onsale => "ONSALE", :pending => "PENDING" ...} or {:onsale => 1, :pending => 2 ...}
+	# 3. If you want to specify status value that save in database, use Hash instead of Array. 
+	# 	ex) {:onsale => "ONSALE", :pending => "PENDING" ...} or {:onsale => 1, :pending => 2 ...}
 end
 ```
 or
