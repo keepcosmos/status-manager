@@ -4,8 +4,9 @@ require 'models/product'
 describe StatusManager do
 
   it 'should set default status' do
-    product = Product.new
+    product = Product.new(sale_status: 'onsale')
     product.save
+    puts Product.sale_statuses
     product.should be_sale_status(:onsale)
   end
 
@@ -73,5 +74,4 @@ describe StatusManager do
       product.should be_sale_status(:display)
     end
   end
-
 end

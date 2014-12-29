@@ -6,11 +6,11 @@ require 'status-manager/version'
 Gem::Specification.new do |spec|
   spec.name          = "status-manager"
   spec.version       = StatusManager::VERSION
-  spec.date          = "2014-04-14"
+  spec.date          = "2014-12-29"
   spec.authors       = ["keepcosmos"]
   spec.email         = ["keepcosmos@gmail.com"]
   spec.description   = "ActiveRecord Model Status Manager"
-  spec.summary       = "ActiveRecord Model Status Manager, It provides easy ways for managing ActiveModels that have many statuses."
+  spec.summary       = "ActiveRecord Model Status Manager, It provides easy ways for managing ActiveRecords that have many statuses."
   spec.homepage      = "https://github.com/keepcosmos/status-manager"
   spec.license       = "MIT"
 

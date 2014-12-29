@@ -17,3 +17,4 @@ test/tmp
 test/version_tmp
 tmp
 coverage
+status_manager_test.sqlite3
