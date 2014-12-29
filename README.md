@@ -7,8 +7,7 @@ www.myrealtrip.com uses status-manager
 
 ## Usage
 
-### Rails 3.x
-
+### Rails 4.x (and 3.x)
 ```ruby
 gem 'status-manager'
 ```
