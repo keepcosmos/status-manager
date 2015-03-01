@@ -3,7 +3,6 @@
 
 ActiveRecord Model Status Manager, It provides easy ways managing models that have many statuses.
 
-www.myrealtrip.com uses status-manager
 
 ## Usage
 
